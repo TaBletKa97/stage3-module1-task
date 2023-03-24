@@ -1,6 +1,6 @@
 package com.mjc.school.service;
 
-import com.mjc.school.repository.DataSource;
+import com.mjc.school.repository.Repository;
 import com.mjc.school.repository.beens.Author;
 import com.mjc.school.repository.beens.News;
 import com.mjc.school.service.dto.NewsDTO;
@@ -12,29 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataManagerImpl implements DataManager {
-    private final DataSource dataSource;
+    private final Repository repository;
 
-    public DataManagerImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public DataManagerImpl(Repository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<NewsDTO> getNews() {
+    public List<NewsDTO> readAll() {
         List<NewsDTO> resultList = new ArrayList<>();
 
-        dataSource.getData().forEach(news -> resultList.add(mapNews(news)));
+        repository.getData().forEach(news -> resultList.add(mapNews(news)));
         return resultList;
     }
 
     @Override
-    public NewsDTO getNewsById(long id) throws SearchNewsException {
+    public NewsDTO readNewsById(long id) throws SearchNewsException {
         return mapNews(searchNews(id));
     }
 
     @Override
     public NewsDTO createNews(String title, String content, long authorId)
             throws SearchAuthorException {
-        List<News> data = dataSource.getData();
+        List<News> data = repository.getData();
         Author author = searchAuthor(authorId);
         data.add(new News(title, content, author));
         return mapNews(data.get(data.size() - 1));
@@ -56,7 +56,7 @@ public class DataManagerImpl implements DataManager {
     public boolean removeNews(long id) {
         try {
             News news = searchNews(id);
-            dataSource.getData().remove(news);
+            repository.getData().remove(news);
             return true;
         } catch (SearchNewsException e) {
             return false;
@@ -69,7 +69,7 @@ public class DataManagerImpl implements DataManager {
     }
 
     private Author searchAuthor(long id) throws SearchAuthorException {
-        return dataSource.getAuthors().stream()
+        return repository.getAuthors().stream()
                 .filter(auth -> auth.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new SearchAuthorException("There isn't" +
@@ -77,7 +77,7 @@ public class DataManagerImpl implements DataManager {
     }
 
     private News searchNews(long id) throws SearchNewsException {
-        return dataSource.getData().stream()
+        return repository.getData().stream()
                 .filter(n -> n.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new SearchNewsException("There isn't" +

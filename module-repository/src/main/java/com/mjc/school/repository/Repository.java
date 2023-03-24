@@ -5,7 +5,7 @@ import com.mjc.school.repository.beens.News;
 
 import java.util.List;
 
-public interface DataSource {
+public interface Repository  {
     List<News> getData();
     List<Author> getAuthors();
 }

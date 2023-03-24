@@ -1,5 +1,6 @@
-package com.mjc.school.repository;
+package com.mjc.school.repository.implementation;
 
+import com.mjc.school.repository.Repository;
 import com.mjc.school.repository.beens.Author;
 import com.mjc.school.repository.beens.News;
 
@@ -10,14 +11,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class DataSourceImpl implements DataSource {
+public class RepositoryImpl implements Repository {
     private final List<News> repository;
     private final List<Author> authors = new ArrayList<>();
 
     final String authorSource;
     final String contentSource;
 
-    public DataSourceImpl(String authorSource, String contentSource) {
+    public RepositoryImpl(String authorSource, String contentSource) {
         this.authorSource = authorSource;
         this.contentSource = contentSource;
         repository = init();

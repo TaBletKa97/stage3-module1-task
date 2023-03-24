@@ -48,13 +48,13 @@ public class GraphicInterfaceImpl implements GraphicInterface {
     }
 
     private void getAllNews() {
-        manager.getNews().forEach(System.out::println);
+        manager.readAll().forEach(System.out::println);
     }
 
     private void getNewsById(Scanner sc) {
         long id = enterId(sc, "Type news id:");
         try {
-            System.out.println(manager.getNewsById(id));
+            System.out.println(manager.readNewsById(id));
         } catch (SearchNewsException e) {
             System.err.println("ERROR01 " + e.getMessage());
         }
