@@ -8,7 +8,9 @@ import com.mjc.school.service.DataManagerImpl;
 
 public class Main {
     public static void main(String[] args) {
-        DataSource dataSource = new DataSourceImpl();
+        final String authorSource = "module-repository/src/main/resources/author.txt";
+        final String contentSource = "module-repository/src/main/resources/content.txt";
+        DataSource dataSource = new DataSourceImpl(authorSource, contentSource);
         DataManagerImpl dataManager = new DataManagerImpl(dataSource);
         GraphicInterface menu = new GraphicInterfaceImpl(dataManager);
         menu.start();

@@ -44,7 +44,7 @@ public class GraphicInterfaceImpl implements GraphicInterface {
                 case 0 -> System.out.println("Goodbye!");
                 default -> System.err.println("Incorrect value.");
             }
-        } while (selectedVariant != 6);
+        } while (selectedVariant != 0);
     }
 
     private void getAllNews() {

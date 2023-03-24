@@ -14,8 +14,12 @@ public class DataSourceImpl implements DataSource {
     private final List<News> repository;
     private final List<Author> authors = new ArrayList<>();
 
+    final String authorSource;
+    final String contentSource;
 
-    public DataSourceImpl() {
+    public DataSourceImpl(String authorSource, String contentSource) {
+        this.authorSource = authorSource;
+        this.contentSource = contentSource;
         repository = init();
     }
 
@@ -30,9 +34,6 @@ public class DataSourceImpl implements DataSource {
     }
 
     private List<News> init() {
-        final String authorSource = "module-repository/src/main/resources/author.txt";
-        final String contentSource = "module-repository/src/main/resources/content.txt";
-
         List<News> resultList = new ArrayList<>();
 
         List<String> titles = new ArrayList<>();
