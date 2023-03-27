@@ -1,7 +1,7 @@
 package com.mjc.school.service.implementation;
 
-import com.mjc.school.repository.dao.implementation.AuthorRepositoryImpl;
-import com.mjc.school.repository.dao.implementation.NewsRepositoryImpl;
+import com.mjc.school.repository.implementation.AuthorRepositoryImpl;
+import com.mjc.school.repository.implementation.NewsRepositoryImpl;
 import com.mjc.school.repository.model.Author;
 import com.mjc.school.repository.model.News;
 import com.mjc.school.service.DataManagingService;
@@ -61,7 +61,7 @@ public class DataManagingServiceImpl implements DataManagingService {
     }
 
     @Override
-    public boolean removeNews(NewsDTORequest req) throws ValidatingDTOException {
+    public boolean removeNews(NewsDTORequest req) {
         return newsDAO.deleteById(req.getId());
     }
 }

@@ -1,13 +1,13 @@
-package com.mjc.school.repository.dao.implementation;
+package com.mjc.school.repository.implementation;
 
 import com.mjc.school.repository.DataGenerator;
-import com.mjc.school.repository.dao.AbstractRepositoryDao;
+import com.mjc.school.repository.Repository;
 import com.mjc.school.repository.model.Author;
 
 import java.util.List;
 import java.util.Objects;
 
-public class AuthorRepositoryImpl implements AbstractRepositoryDao<Author, Long> {
+public class AuthorRepositoryImpl implements Repository<Author, Long> {
     private final List<Author> authorsRepo;
 
     public AuthorRepositoryImpl() {
