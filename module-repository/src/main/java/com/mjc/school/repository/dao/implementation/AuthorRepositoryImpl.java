@@ -1,16 +1,16 @@
 package com.mjc.school.repository.dao.implementation;
 
 import com.mjc.school.repository.DataGenerator;
-import com.mjc.school.repository.dao.AbstractDao;
+import com.mjc.school.repository.dao.AbstractRepositoryDao;
 import com.mjc.school.repository.model.Author;
 
 import java.util.List;
 import java.util.Objects;
 
-public class AuthorDAOImpl implements AbstractDao<Author, Long> {
+public class AuthorRepositoryImpl implements AbstractRepositoryDao<Author, Long> {
     private final List<Author> authorsRepo;
 
-    public AuthorDAOImpl() {
+    public AuthorRepositoryImpl() {
         this.authorsRepo = DataGenerator.getInstance().getAuthors();
     }
 

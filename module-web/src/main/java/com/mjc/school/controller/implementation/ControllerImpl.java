@@ -1,6 +1,6 @@
 package com.mjc.school.controller.implementation;
 
-import com.mjc.school.controller.GraphicInterface;
+import com.mjc.school.controller.Controller;
 import com.mjc.school.service.DataManagingService;
 import com.mjc.school.service.dto.NewsDTORequest;
 import com.mjc.school.service.exceptions.validation.ValidatingDTOException;
@@ -13,10 +13,10 @@ import lombok.Cleanup;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class GraphicInterfaceImpl implements GraphicInterface {
+public class ControllerImpl implements Controller {
     private final DataManagingService manager;
 
-    public GraphicInterfaceImpl() {
+    public ControllerImpl() {
         this.manager = new DataManagingServiceImpl();
     }
 

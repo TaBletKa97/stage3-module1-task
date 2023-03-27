@@ -1,5 +1,5 @@
 package com.mjc.school.controller;
 
-public interface GraphicInterface {
+public interface Controller {
     void start();
 }

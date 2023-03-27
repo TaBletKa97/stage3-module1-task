@@ -1,7 +1,7 @@
 package com.mjc.school.service.implementation;
 
-import com.mjc.school.repository.dao.implementation.AuthorDAOImpl;
-import com.mjc.school.repository.dao.implementation.NewsDAOImpl;
+import com.mjc.school.repository.dao.implementation.AuthorRepositoryImpl;
+import com.mjc.school.repository.dao.implementation.NewsRepositoryImpl;
 import com.mjc.school.repository.model.Author;
 import com.mjc.school.repository.model.News;
 import com.mjc.school.service.DataManagingService;
@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 import static com.mjc.school.service.utils.NewsRequestValidator.validateNews;
 
 public class DataManagingServiceImpl implements DataManagingService {
-    private final NewsDAOImpl newsDAO = new NewsDAOImpl();
-    private final AuthorDAOImpl authorDAO = new AuthorDAOImpl();
+    private final NewsRepositoryImpl newsDAO = new NewsRepositoryImpl();
+    private final AuthorRepositoryImpl authorDAO = new AuthorRepositoryImpl();
 
     @Override
     public List<NewsDTOResponse> readAll() {

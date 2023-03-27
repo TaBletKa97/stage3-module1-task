@@ -1,11 +1,11 @@
 package com.mjc.school;
 
-import com.mjc.school.controller.GraphicInterface;
-import com.mjc.school.controller.implementation.GraphicInterfaceImpl;
+import com.mjc.school.controller.Controller;
+import com.mjc.school.controller.implementation.ControllerImpl;
 
 public class Main {
     public static void main(String[] args) {
-        GraphicInterface menu = new GraphicInterfaceImpl();
+        Controller menu = new ControllerImpl();
         menu.start();
     }
 }

@@ -1,7 +1,7 @@
 package com.mjc.school.repository.dao.implementation;
 
 import com.mjc.school.repository.DataGenerator;
-import com.mjc.school.repository.dao.AbstractDao;
+import com.mjc.school.repository.dao.AbstractRepositoryDao;
 import com.mjc.school.repository.model.News;
 
 import java.time.LocalDateTime;
@@ -9,10 +9,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
-public class NewsDAOImpl implements AbstractDao<News, Long> {
+public class NewsRepositoryImpl implements AbstractRepositoryDao<News, Long> {
     private final List<News> newsRepo;
 
-    public NewsDAOImpl() {
+    public NewsRepositoryImpl() {
         DataGenerator generator = DataGenerator.getInstance();
         newsRepo = generator.getNews();
     }

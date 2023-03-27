@@ -4,7 +4,7 @@ import com.mjc.school.repository.model.Entity;
 
 import java.util.List;
 
-public interface AbstractDao<T extends Entity<ID> , ID> {
+public interface AbstractRepositoryDao<T extends Entity<ID> , ID> {
     List<T> readAll();
     T readById(ID id);
     T create(T entity);
