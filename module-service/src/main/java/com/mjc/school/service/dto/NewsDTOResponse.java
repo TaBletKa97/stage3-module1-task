@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class NewsDTO {
-    private long newsId;
-    private String newsTitle;
-    private String newsContent;
-    private LocalDateTime newsLastUpdateDate;
-    private LocalDateTime newsCreateDate;
+public class NewsDTOResponse {
+    private long id;
+    private String title;
+    private String content;
+    private LocalDateTime createDate;
+    private LocalDateTime lastUpdateDate;
     private long authorId;
     private String authorName;
 }

@@ -1,4 +1,4 @@
-package com.mjc.school.repository.util;
+package com.mjc.school.repository.utils;
 
 public class NameValidator {
     public static void validateLength(String source, int minLength

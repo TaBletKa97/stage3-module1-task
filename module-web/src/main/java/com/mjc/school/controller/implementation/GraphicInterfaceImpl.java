@@ -1,18 +1,24 @@
-package com.mjc.school.controller;
+package com.mjc.school.controller.implementation;
 
-import com.mjc.school.service.DataManager;
-import com.mjc.school.service.dto.NewsDTO;
+import com.mjc.school.controller.GraphicInterface;
+import com.mjc.school.service.DataManagingService;
+import com.mjc.school.service.dto.NewsDTORequest;
+import com.mjc.school.service.exceptions.validation.ValidatingDTOException;
+import com.mjc.school.service.implementation.DataManagingServiceImpl;
+import com.mjc.school.service.dto.NewsDTOResponse;
 import com.mjc.school.service.exceptions.SearchAuthorException;
 import com.mjc.school.service.exceptions.SearchNewsException;
-import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-@AllArgsConstructor
 public class GraphicInterfaceImpl implements GraphicInterface {
-    private DataManager manager;
+    private final DataManagingService manager;
+
+    public GraphicInterfaceImpl() {
+        this.manager = new DataManagingServiceImpl();
+    }
 
     @Override
     public void start() {
@@ -35,14 +41,22 @@ public class GraphicInterfaceImpl implements GraphicInterface {
                 sc.nextLine();
                 selectedVariant = -1;
             }
-            switch (selectedVariant) {
-                case 1 -> getAllNews();
-                case 2 -> getNewsById(sc);
-                case 3 -> createNews(sc);
-                case 4 -> updateNews(sc);
-                case 5 -> removeNews(sc);
-                case 0 -> System.out.println("Goodbye!");
-                default -> System.err.println("Incorrect value.");
+            try {
+                switch (selectedVariant) {
+                    case 1 -> getAllNews();
+                    case 2 -> getNewsById(sc);
+                    case 3 -> createNews(sc);
+                    case 4 -> updateNews(sc);
+                    case 5 -> removeNews(sc);
+                    case 0 -> System.out.println("Goodbye!");
+                    default -> System.err.println("Incorrect value.");
+                }
+            } catch (SearchNewsException e) {
+                System.err.println("ERROR01 " + e.getMessage());
+            } catch (SearchAuthorException e) {
+                System.err.println("ERROR02 " + e.getMessage());
+            } catch (ValidatingDTOException e) {
+                System.err.println("ERROR03 " + e.getMessage());
             }
         } while (selectedVariant != 0);
     }
@@ -51,53 +65,41 @@ public class GraphicInterfaceImpl implements GraphicInterface {
         manager.readAll().forEach(System.out::println);
     }
 
-    private void getNewsById(Scanner sc) {
+    private void getNewsById(Scanner sc) throws SearchNewsException,
+            ValidatingDTOException {
         long id = enterId(sc, "Type news id:");
-        try {
-            System.out.println(manager.readNewsById(id));
-        } catch (SearchNewsException e) {
-            System.err.println("ERROR01 " + e.getMessage());
-        }
+        System.out.println(manager.readNewsById(new NewsDTORequest(id)));
+
     }
 
-    private void createNews(Scanner sc) {
+    private void createNews(Scanner sc) throws ValidatingDTOException,
+            SearchAuthorException {
         sc.nextLine();
         String title = enterString(sc, "Type a title:");
         String content = enterString(sc, "Type a article:");
         long authorId = enterId(sc, "Type author id");
-        try {
-            NewsDTO news = manager.createNews(title, content, authorId);
-            System.out.println("News created:");
-            System.out.println(news);
-        } catch (SearchAuthorException e) {
-            System.err.println("ERROR02 " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println("ERROR03 " + e.getMessage());
-        }
-        System.out.println("create");
+        NewsDTOResponse news = manager.createNews(new NewsDTORequest(title,
+                content, authorId));
+        System.out.println("News created:");
+        System.out.println(news);
+        System.out.println("News created.");
     }
 
-    private void updateNews(Scanner sc) {
-        long newsId = enterId(sc, "Type news id");
+    private void updateNews(Scanner sc) throws SearchNewsException,
+            ValidatingDTOException, SearchAuthorException {
+        long newsId = enterId(sc, "Type news id:");
         sc.nextLine();
         String title = enterString(sc, "Type a new title:");
         String content = enterString(sc, "Type a new article:");
         long authorId = enterId(sc, "Type author id");
-        try {
-            System.out.println(manager.updateNews(newsId, title, content,
-                    authorId));
-        } catch (SearchNewsException e) {
-            System.err.println("ERROR01 " + e.getMessage());
-        } catch (SearchAuthorException e) {
-            System.err.println("ERROR02 " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println("ERROR03 " + e.getMessage());
-        }
+        System.out.println(manager.updateNews(new NewsDTORequest(newsId,
+                title, content, authorId)));
+
     }
 
-    private void removeNews(Scanner sc) {
-        long newsId = enterId(sc, "Type news id");
-        System.out.println(manager.removeNews(newsId));
+    private void removeNews(Scanner sc) throws ValidatingDTOException {
+        long newsId = enterId(sc, "Type news id:");
+        System.out.println(manager.removeNews(new NewsDTORequest(newsId)));
     }
 
     private long enterId(Scanner sc, String message) {

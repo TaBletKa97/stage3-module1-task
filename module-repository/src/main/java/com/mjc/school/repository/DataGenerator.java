@@ -1,8 +1,8 @@
-package com.mjc.school.repository.implementation;
+package com.mjc.school.repository;
 
-import com.mjc.school.repository.Repository;
-import com.mjc.school.repository.beens.Author;
-import com.mjc.school.repository.beens.News;
+import com.mjc.school.repository.model.Author;
+import com.mjc.school.repository.model.News;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,31 +11,24 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class RepositoryImpl implements Repository {
-    private final List<News> repository;
+@Getter
+public class DataGenerator {
+    private static final DataGenerator instance = new DataGenerator();
+
+    private final List<News> news = new ArrayList<>();
     private final List<Author> authors = new ArrayList<>();
 
-    final String authorSource;
-    final String contentSource;
-
-    public RepositoryImpl(String authorSource, String contentSource) {
-        this.authorSource = authorSource;
-        this.contentSource = contentSource;
-        repository = init();
+    private DataGenerator() {
+        init();
     }
 
-    @Override
-    public List<News> getData() {
-        return repository;
+    public static DataGenerator getInstance() {
+        return instance;
     }
 
-    @Override
-    public List<Author> getAuthors() {
-        return authors;
-    }
-
-    private List<News> init() {
-        List<News> resultList = new ArrayList<>();
+    private void init() {
+        final String authorSource = "C:\\Users\\TaBletKa97\\IdeaProjects\\stage3-module1-task\\module-repository\\src\\main\\resources\\author.txt";
+        final String contentSource = "C:\\Users\\TaBletKa97\\IdeaProjects\\stage3-module1-task\\module-repository\\src\\main\\resources\\content.txt";
 
         List<String> titles = new ArrayList<>();
         List<String> articles = new ArrayList<>();
@@ -63,10 +56,9 @@ public class RepositoryImpl implements Repository {
 
         Random random = new Random();
         for (int i = 0; i < 20; i++) {
-            resultList.add(new News(titles.get(random.nextInt(titles.size())),
+            news.add(new News(titles.get(random.nextInt(titles.size())),
                     articles.get(random.nextInt(articles.size())),
                     authors.get(random.nextInt(authors.size()))));
         }
-        return resultList;
     }
 }
