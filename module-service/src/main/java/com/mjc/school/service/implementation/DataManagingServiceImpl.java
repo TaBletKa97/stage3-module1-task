@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 import static com.mjc.school.service.utils.NewsRequestValidator.validateNews;
 
 public class DataManagingServiceImpl implements DataManagingService {
-    private final NewsRepositoryImpl newsDAO = new NewsRepositoryImpl();
-    private final AuthorRepositoryImpl authorDAO = new AuthorRepositoryImpl();
+    private NewsRepositoryImpl newsDAO = new NewsRepositoryImpl();
+    private AuthorRepositoryImpl authorDAO = new AuthorRepositoryImpl();
 
     @Override
     public List<NewsDTOResponse> readAll() {
@@ -30,8 +30,7 @@ public class DataManagingServiceImpl implements DataManagingService {
 
     @Override
     public NewsDTOResponse readNewsById(NewsDTORequest req) throws
-            SearchNewsException, ValidatingDTOException {
-        validateNews(req);
+            SearchNewsException {
         NewsModel newsModel = newsDAO.readById(NewsMapper.INSTANCE.unmapNewsReq(req).getId());
         if (newsModel == null) {
             throw new SearchNewsException("News with such id was not found.");
@@ -52,10 +51,14 @@ public class DataManagingServiceImpl implements DataManagingService {
     }
 
     @Override
-    public NewsDTOResponse updateNews(NewsDTORequest req) throws ValidatingDTOException {
+    public NewsDTOResponse updateNews(NewsDTORequest req) throws ValidatingDTOException, SearchAuthorException, SearchNewsException {
         validateNews(req);
         NewsModel newsModel = NewsMapper.INSTANCE.unmapNewsReq(req);
+        readNewsById(new NewsDTORequest(req.getId()));
         AuthorModel authorModel = authorDAO.readById(req.getAuthorId());
+        if (authorModel == null) {
+            throw new SearchAuthorException("Author with such id was not found.");
+        }
         newsModel.setAuthor(authorModel);
         NewsModel update = newsDAO.update(newsModel);
         return NewsMapper.INSTANCE.mapNews(update);

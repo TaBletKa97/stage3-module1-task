@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class NewsModel extends Entity<Long> {
     private static long idCounter = 1;

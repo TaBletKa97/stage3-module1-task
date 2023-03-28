@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class NewsRepositoryImpl implements Repository<NewsModel, Long> {
-    private final DataSource dataSource;
+    private DataSource dataSource;
 
     public NewsRepositoryImpl() {
         dataSource = DataSource.getInstance();

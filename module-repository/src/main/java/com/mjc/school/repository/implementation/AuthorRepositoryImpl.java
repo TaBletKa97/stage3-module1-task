@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class AuthorRepositoryImpl implements Repository<AuthorModel, Long> {
-    private final DataSource dataSource;
+    private DataSource dataSource;
 
     public AuthorRepositoryImpl() {
         this.dataSource = DataSource.getInstance();
