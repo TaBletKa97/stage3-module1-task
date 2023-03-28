@@ -1,7 +1,7 @@
 package com.mjc.school.repository;
 
-import com.mjc.school.repository.model.Author;
-import com.mjc.school.repository.model.News;
+import com.mjc.school.repository.model.AuthorModel;
+import com.mjc.school.repository.model.NewsModel;
 import lombok.Getter;
 
 import java.io.File;
@@ -12,17 +12,17 @@ import java.util.Random;
 import java.util.Scanner;
 
 @Getter
-public class DataGenerator {
-    private static final DataGenerator instance = new DataGenerator();
+public class DataSource {
+    private static final DataSource instance = new DataSource();
 
-    private final List<News> news = new ArrayList<>();
-    private final List<Author> authors = new ArrayList<>();
+    private final List<NewsModel> newsModels = new ArrayList<>();
+    private final List<AuthorModel> authorModels = new ArrayList<>();
 
-    private DataGenerator() {
+    private DataSource() {
         init();
     }
 
-    public static DataGenerator getInstance() {
+    public static DataSource getInstance() {
         return instance;
     }
 
@@ -34,7 +34,7 @@ public class DataGenerator {
         List<String> articles = new ArrayList<>();
         try (Scanner sc = new Scanner(new File(authorSource))) {
             while (sc.hasNext()) {
-                authors.add(new Author(sc.nextLine()));
+                authorModels.add(new AuthorModel(sc.nextLine()));
             }
         } catch (FileNotFoundException e) {
             System.err.println("Can not find file with name " + authorSource);
@@ -56,9 +56,9 @@ public class DataGenerator {
 
         Random random = new Random();
         for (int i = 0; i < 20; i++) {
-            news.add(new News(titles.get(random.nextInt(titles.size())),
+            newsModels.add(new NewsModel(titles.get(random.nextInt(titles.size())),
                     articles.get(random.nextInt(articles.size())),
-                    authors.get(random.nextInt(authors.size()))));
+                    authorModels.get(random.nextInt(authorModels.size()))));
         }
     }
 }

@@ -78,10 +78,10 @@ public class ControllerImpl implements Controller {
         String title = enterString(sc, "Type a title:");
         String content = enterString(sc, "Type a article:");
         long authorId = enterId(sc, "Type author id");
-        NewsDTOResponse news = manager.createNews(new NewsDTORequest(title,
+        NewsDTOResponse newsModel = manager.createNews(new NewsDTORequest(title,
                 content, authorId));
         System.out.println("News created:");
-        System.out.println(news);
+        System.out.println(newsModel);
         System.out.println("News created.");
     }
 

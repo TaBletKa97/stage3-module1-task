@@ -9,5 +9,5 @@ public interface Repository<T extends Entity<ID> , ID> {
     T readById(ID id);
     T create(T entity);
     T update(T entity);
-    boolean deleteById(ID id);
+    Boolean deleteById(ID id);
 }

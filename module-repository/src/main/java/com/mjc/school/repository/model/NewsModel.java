@@ -9,16 +9,16 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class News extends Entity<Long> {
+public class NewsModel extends Entity<Long> {
     private static long idCounter = 1;
 
     private String title;
     private String content;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
-    private Author author;
+    private AuthorModel author;
 
-    public News(String title, String content, Author author) {
+    public NewsModel(String title, String content, AuthorModel author) {
         setId(idCounter++);
         this.title = title;
         this.content = content;

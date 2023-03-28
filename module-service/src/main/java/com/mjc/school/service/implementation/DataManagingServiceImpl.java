@@ -2,8 +2,8 @@ package com.mjc.school.service.implementation;
 
 import com.mjc.school.repository.implementation.AuthorRepositoryImpl;
 import com.mjc.school.repository.implementation.NewsRepositoryImpl;
-import com.mjc.school.repository.model.Author;
-import com.mjc.school.repository.model.News;
+import com.mjc.school.repository.model.AuthorModel;
+import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.DataManagingService;
 import com.mjc.school.service.dto.NewsDTORequest;
 import com.mjc.school.service.dto.NewsDTOResponse;
@@ -32,31 +32,32 @@ public class DataManagingServiceImpl implements DataManagingService {
     public NewsDTOResponse readNewsById(NewsDTORequest req) throws
             SearchNewsException, ValidatingDTOException {
         validateNews(req);
-        News news = newsDAO.readById(NewsMapper.INSTANCE.unmapNewsReq(req).getId());
-        if (news == null) {
+        NewsModel newsModel = newsDAO.readById(NewsMapper.INSTANCE.unmapNewsReq(req).getId());
+        if (newsModel == null) {
             throw new SearchNewsException("News with such id was not found.");
         }
-        return NewsMapper.INSTANCE.mapNews(news);
+        return NewsMapper.INSTANCE.mapNews(newsModel);
     }
 
     @Override
     public NewsDTOResponse createNews(NewsDTORequest req) throws
             SearchAuthorException, ValidatingDTOException {
         validateNews(req);
-        Author author = authorDAO.readById(req.getAuthorId());
-        if (author == null) {
+        AuthorModel authorModel = authorDAO.readById(req.getAuthorId());
+        if (authorModel == null) {
             throw new SearchAuthorException("Author with such id was not found.");
         }
-        News news = newsDAO.create(new News(req.getTitle(), req.getContent(), author));
-        return NewsMapper.INSTANCE.mapNews(news);
+        NewsModel newsModel = newsDAO.create(new NewsModel(req.getTitle(), req.getContent(), authorModel));
+        return NewsMapper.INSTANCE.mapNews(newsModel);
     }
 
     @Override
-    public NewsDTOResponse updateNews(NewsDTORequest req) throws
-            SearchNewsException, ValidatingDTOException {
+    public NewsDTOResponse updateNews(NewsDTORequest req) throws ValidatingDTOException {
         validateNews(req);
-        News news = NewsMapper.INSTANCE.unmapNewsResp(readNewsById(req));
-        News update = newsDAO.update(news);
+        NewsModel newsModel = NewsMapper.INSTANCE.unmapNewsReq(req);
+        AuthorModel authorModel = authorDAO.readById(req.getAuthorId());
+        newsModel.setAuthor(authorModel);
+        NewsModel update = newsDAO.update(newsModel);
         return NewsMapper.INSTANCE.mapNews(update);
     }
 

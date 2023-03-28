@@ -1,54 +1,53 @@
 package com.mjc.school.repository.implementation;
 
-import com.mjc.school.repository.DataGenerator;
+import com.mjc.school.repository.DataSource;
 import com.mjc.school.repository.Repository;
-import com.mjc.school.repository.model.News;
+import com.mjc.school.repository.model.NewsModel;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
-public class NewsRepositoryImpl implements Repository<News, Long> {
-    private final List<News> newsRepo;
+public class NewsRepositoryImpl implements Repository<NewsModel, Long> {
+    private final DataSource dataSource;
 
     public NewsRepositoryImpl() {
-        DataGenerator generator = DataGenerator.getInstance();
-        newsRepo = generator.getNews();
+        dataSource = DataSource.getInstance();
     }
 
     @Override
-    public List<News> readAll() {
-        return newsRepo;
+    public List<NewsModel> readAll() {
+        return dataSource.getNewsModels();
     }
 
     @Override
-    public News readById(Long id) {
-        return newsRepo.stream()
+    public NewsModel readById(Long id) {
+        return dataSource.getNewsModels().stream()
                 .filter(e -> Objects.equals(e.getId(), id))
                 .findFirst()
                 .orElse(null);
     }
 
     @Override
-    public News create(News entity) {
-        newsRepo.add(entity);
+    public NewsModel create(NewsModel entity) {
+        dataSource.getNewsModels().add(entity);
         return entity;
     }
 
     @Override
-    public News update(News entity) {
-        News news = readById(entity.getId());
-        news.setTitle(entity.getTitle());
-        news.setContent(entity.getContent());
-        news.setAuthor(entity.getAuthor());
-        news.setLastUpdateDate(LocalDateTime.now()
+    public NewsModel update(NewsModel entity) {
+        NewsModel newsModel = readById(entity.getId());
+        newsModel.setTitle(entity.getTitle());
+        newsModel.setContent(entity.getContent());
+        newsModel.setAuthor(entity.getAuthor());
+        newsModel.setLastUpdateDate(LocalDateTime.now()
                 .truncatedTo(ChronoUnit.SECONDS));
-        return news;
+        return newsModel;
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        return newsRepo.remove(readById(id));
+    public Boolean deleteById(Long id) {
+        return dataSource.getNewsModels().remove(readById(id));
     }
 }

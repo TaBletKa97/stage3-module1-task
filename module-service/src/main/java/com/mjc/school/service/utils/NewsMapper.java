@@ -1,6 +1,6 @@
 package com.mjc.school.service.utils;
 
-import com.mjc.school.repository.model.News;
+import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.dto.NewsDTORequest;
 import com.mjc.school.service.dto.NewsDTOResponse;
 import org.mapstruct.Mapper;
@@ -14,12 +14,12 @@ public interface NewsMapper {
 
     @Mapping(source = "author.id", target = "authorId")
     @Mapping(source = "author.name", target = "authorName")
-    NewsDTOResponse mapNews(News news);
+    NewsDTOResponse mapNews(NewsModel newsModel);
 
     @Mapping(source = "authorId", target = "author.id")
-    News unmapNewsReq(NewsDTORequest request);
+    NewsModel unmapNewsReq(NewsDTORequest request);
 
     @Mapping(source = "authorId", target = "author.id")
     @Mapping(source = "authorName", target = "author.name")
-    News unmapNewsResp(NewsDTOResponse resp);
+    NewsModel unmapNewsResp(NewsDTOResponse resp);
 }
