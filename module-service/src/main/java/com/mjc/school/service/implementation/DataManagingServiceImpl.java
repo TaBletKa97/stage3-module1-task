@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class DataManagingServiceImpl implements DataManagingService {
     private NewsRepositoryImpl newsRepository = new NewsRepositoryImpl();
-    private AuthorRepositoryImpl authorRepository = new AuthorRepositoryImpl();
-    private NewsRequestValidator validator = new NewsRequestValidator();
+    private AuthorRepositoryImpl authorDAO = new AuthorRepositoryImpl();
+    private NewsRequestValidator requestValidator = new NewsRequestValidator();
 
     @Override
     public List<NewsDTOResponse> readAll() {
@@ -29,9 +29,9 @@ public class DataManagingServiceImpl implements DataManagingService {
     }
 
     @Override
-    public NewsDTOResponse readByIdNews(NewsDTORequest req) throws
+    public NewsDTOResponse readByIdNews(Long id) throws
             SearchNewsException {
-        NewsModel newsModel = newsRepository.readById(NewsMapper.INSTANCE.unmapNewsReq(req).getId());
+        NewsModel newsModel = newsRepository.readById(id);
         if (newsModel == null) {
             throw new SearchNewsException("News with such id was not found.");
         }
@@ -41,8 +41,8 @@ public class DataManagingServiceImpl implements DataManagingService {
     @Override
     public NewsDTOResponse createNews(NewsDTORequest req) throws
             SearchAuthorException, ValidatingDTOException {
-        validator.validateNews(req);
-        AuthorModel authorModel = authorRepository.readById(req.getAuthorId());
+        requestValidator.validateNews(req);
+        AuthorModel authorModel = authorDAO.readById(req.getAuthorId());
         if (authorModel == null) {
             throw new SearchAuthorException("Author with such id was not found.");
         }
@@ -52,10 +52,10 @@ public class DataManagingServiceImpl implements DataManagingService {
 
     @Override
     public NewsDTOResponse updateNews(NewsDTORequest req) throws ValidatingDTOException, SearchAuthorException, SearchNewsException {
-        validator.validateNews(req);
+        requestValidator.validateNews(req);
         NewsModel newsModel = NewsMapper.INSTANCE.unmapNewsReq(req);
-        readByIdNews(new NewsDTORequest(req.getId()));
-        AuthorModel authorModel = authorRepository.readById(req.getAuthorId());
+        readByIdNews(req.getId());
+        AuthorModel authorModel = authorDAO.readById(req.getAuthorId());
         if (authorModel == null) {
             throw new SearchAuthorException("Author with such id was not found.");
         }
@@ -65,7 +65,7 @@ public class DataManagingServiceImpl implements DataManagingService {
     }
 
     @Override
-    public boolean deleteNews(NewsDTORequest req) {
-        return newsRepository.deleteById(req.getId());
+    public Boolean deleteNews(Long id) {
+        return newsRepository.deleteById(id);
     }
 }

@@ -65,7 +65,7 @@ class DataManagingServiceImplTest {
         dataSourceField.set(newsDao, mockDataSource);
 
         //mocking DataSource in authorDAO
-        Field authorDaoField = manager.getClass().getDeclaredField("authorRepository");
+        Field authorDaoField = manager.getClass().getDeclaredField("authorDAO");
         authorDaoField.setAccessible(true);
         AuthorRepositoryImpl authorDao = (AuthorRepositoryImpl) authorDaoField.get(manager);
 
@@ -92,8 +92,8 @@ class DataManagingServiceImplTest {
     void readNewsByIdSuccessTest() throws SearchNewsException {
         final NewsDTOResponse expectedNewsWithId1 = NewsMapper.INSTANCE.mapNews(newsList.get(0));
         final NewsDTOResponse expectedNewsWithId2 = NewsMapper.INSTANCE.mapNews(newsList.get(1));
-        NewsDTOResponse newsById1 = manager.readByIdNews(new NewsDTORequest(1L));
-        NewsDTOResponse newsById2 = manager.readByIdNews(new NewsDTORequest(2L));
+        NewsDTOResponse newsById1 = manager.readByIdNews(1L);
+        NewsDTOResponse newsById2 = manager.readByIdNews(2L);
         assertEquals(expectedNewsWithId1, newsById1);
         assertEquals(expectedNewsWithId2, newsById2);
     }
@@ -101,7 +101,7 @@ class DataManagingServiceImplTest {
     @Test
     void readNewsByIdWrongIdTest() {
         assertThrows(SearchNewsException.class,
-                () -> manager.readByIdNews(new NewsDTORequest(65L)));
+                () -> manager.readByIdNews(65L));
     }
 
     @Test
@@ -176,8 +176,8 @@ class DataManagingServiceImplTest {
     @Test
     void deleteNewsTest() throws ValidatingDTOException, SearchAuthorException {
         NewsDTOResponse news = manager.createNews(new NewsDTORequest("for delete", "roe delete", 1L));
-        boolean success = manager.deleteNews(new NewsDTORequest(news.getId()));
-        boolean fail = manager.deleteNews(new NewsDTORequest(100L));
+        boolean success = manager.deleteNews(news.getId());
+        boolean fail = manager.deleteNews(100L);
         assertTrue(success);
         assertFalse(fail);
     }

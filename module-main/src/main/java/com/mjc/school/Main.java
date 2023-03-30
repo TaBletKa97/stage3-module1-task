@@ -5,7 +5,7 @@ import com.mjc.school.controller.implementation.ControllerImpl;
 
 public class Main {
     public static void main(String[] args) {
-        Controller menu = new ControllerImpl();
-        menu.start();
+        Controller menuController = new ControllerImpl();
+        menuController.start();
     }
 }
