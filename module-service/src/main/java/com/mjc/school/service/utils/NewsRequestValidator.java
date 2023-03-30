@@ -6,7 +6,7 @@ import com.mjc.school.service.exceptions.validation.TitleLengthException;
 import com.mjc.school.service.exceptions.validation.ValidatingDTOException;
 
 public class NewsRequestValidator {
-    public static void validateNews(NewsDTORequest req) throws ValidatingDTOException {
+    public void validateNews(NewsDTORequest req) throws ValidatingDTOException {
         String title = req.getTitle();
         String content = req.getContent();
         if (title != null) {

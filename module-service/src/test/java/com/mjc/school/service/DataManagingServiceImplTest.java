@@ -56,7 +56,7 @@ class DataManagingServiceImplTest {
         DataSource mockDataSource = mock(DataSource.class);
 
         //mocking DataSource in newsDAO
-        Field newsDaoField = manager.getClass().getDeclaredField("newsDAO");
+        Field newsDaoField = manager.getClass().getDeclaredField("newsRepository");
         newsDaoField.setAccessible(true);
         NewsRepositoryImpl newsDao = (NewsRepositoryImpl) newsDaoField.get(manager);
 
@@ -65,7 +65,7 @@ class DataManagingServiceImplTest {
         dataSourceField.set(newsDao, mockDataSource);
 
         //mocking DataSource in authorDAO
-        Field authorDaoField = manager.getClass().getDeclaredField("authorDAO");
+        Field authorDaoField = manager.getClass().getDeclaredField("authorRepository");
         authorDaoField.setAccessible(true);
         AuthorRepositoryImpl authorDao = (AuthorRepositoryImpl) authorDaoField.get(manager);
 
@@ -92,8 +92,8 @@ class DataManagingServiceImplTest {
     void readNewsByIdSuccessTest() throws SearchNewsException {
         final NewsDTOResponse expectedNewsWithId1 = NewsMapper.INSTANCE.mapNews(newsList.get(0));
         final NewsDTOResponse expectedNewsWithId2 = NewsMapper.INSTANCE.mapNews(newsList.get(1));
-        NewsDTOResponse newsById1 = manager.readNewsById(new NewsDTORequest(1L));
-        NewsDTOResponse newsById2 = manager.readNewsById(new NewsDTORequest(2L));
+        NewsDTOResponse newsById1 = manager.readByIdNews(new NewsDTORequest(1L));
+        NewsDTOResponse newsById2 = manager.readByIdNews(new NewsDTORequest(2L));
         assertEquals(expectedNewsWithId1, newsById1);
         assertEquals(expectedNewsWithId2, newsById2);
     }
@@ -101,7 +101,7 @@ class DataManagingServiceImplTest {
     @Test
     void readNewsByIdWrongIdTest() {
         assertThrows(SearchNewsException.class,
-                () -> manager.readNewsById(new NewsDTORequest(65L)));
+                () -> manager.readByIdNews(new NewsDTORequest(65L)));
     }
 
     @Test
@@ -174,10 +174,10 @@ class DataManagingServiceImplTest {
 
 
     @Test
-    void removeNews() throws ValidatingDTOException, SearchAuthorException {
+    void deleteNewsTest() throws ValidatingDTOException, SearchAuthorException {
         NewsDTOResponse news = manager.createNews(new NewsDTORequest("for delete", "roe delete", 1L));
-        boolean success = manager.removeNews(new NewsDTORequest(news.getId()));
-        boolean fail = manager.removeNews(new NewsDTORequest(100L));
+        boolean success = manager.deleteNews(new NewsDTORequest(news.getId()));
+        boolean fail = manager.deleteNews(new NewsDTORequest(100L));
         assertTrue(success);
         assertFalse(fail);
     }

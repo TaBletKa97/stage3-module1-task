@@ -68,7 +68,7 @@ public class ControllerImpl implements Controller {
     private void getNewsById(Scanner sc) throws SearchNewsException,
             ValidatingDTOException {
         long id = enterId(sc, "Type news id:");
-        System.out.println(manager.readNewsById(new NewsDTORequest(id)));
+        System.out.println(manager.readByIdNews(new NewsDTORequest(id)));
 
     }
 
@@ -99,7 +99,7 @@ public class ControllerImpl implements Controller {
 
     private void removeNews(Scanner sc) throws ValidatingDTOException {
         long newsId = enterId(sc, "Type news id:");
-        System.out.println(manager.removeNews(new NewsDTORequest(newsId)));
+        System.out.println(manager.deleteNews(new NewsDTORequest(newsId)));
     }
 
     private long enterId(Scanner sc, String message) {

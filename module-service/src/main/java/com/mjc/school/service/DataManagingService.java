@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface DataManagingService {
     List<NewsDTOResponse> readAll();
-    NewsDTOResponse readNewsById(NewsDTORequest req) throws SearchNewsException;
+    NewsDTOResponse readByIdNews(NewsDTORequest req) throws SearchNewsException;
     NewsDTOResponse createNews(NewsDTORequest req) throws SearchAuthorException, ValidatingDTOException;
     NewsDTOResponse updateNews(NewsDTORequest req) throws SearchNewsException, SearchAuthorException, ValidatingDTOException;
-    boolean removeNews(NewsDTORequest req);
+    boolean deleteNews(NewsDTORequest req);
 }
